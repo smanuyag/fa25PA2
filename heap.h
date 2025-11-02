@@ -14,9 +14,13 @@ struct MinHeap {
 
     MinHeap() { size = 0; }
 
+    //insert new element at the end of the heap, and increase the size by 1 to get the next
+    //available index, then upheap
     void push(int idx, int weightArr[]) {
         // TODO: insert index at end of heap, restore order using upheap()
-
+        data[size] = weightArr[idx];
+        size++;
+        //upheap - need something in push() to pass to upheap, what is it?
 
     }
     //uses an int var that contains the smallest index for returning, and another with the same
@@ -32,7 +36,7 @@ struct MinHeap {
 
         // Replace root with last element, then call downheap()
         replace = weightArr[size - 1];
-        //downheap();
+        //downheap(); - need something to pass to this
         return smallest;
     }
 

@@ -18,6 +18,11 @@ struct MinHeap {
     //available index, then upheap
     void push(int idx, int weightArr[]) {
         // TODO: insert index at end of heap, restore order using upheap()
+        //can't push into a full heap
+        if (size >= 64) {
+            cout<<"Heap is full.";
+            return;
+        }
         data[size] = weightArr[idx];
         int pushed = size;
         size++;

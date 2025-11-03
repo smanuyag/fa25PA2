@@ -134,8 +134,17 @@ int buildEncodingTree(int nextFree) {
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
+    std::stack<pair<int, string>> codeStack;
     // Left edge adds '0', right edge adds '1'.
+    //codeStack.push(make_pair(root, '0'); <-- might not be the right string
+    //codeStack.push(root, '1');
+    //have to maybe traverse the left and right arrays(?)
+    //where to use codes[]? in stack push?
+
+
     // Record code when a leaf node is reached.
+    //check if it's reached nextFree, or similar to that, or check if both left
+    //and right array are empty(?)
 }
 
 // Step 5: Print table and encoded message

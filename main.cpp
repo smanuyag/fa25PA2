@@ -114,12 +114,14 @@ int buildEncodingTree(int nextFree) {
         int pop2 = heap.pop(weightArr);
 
         int parent = nextFree;
-        nextFree++;
+
+        weightArr[parent] = weightArr[pop1] + weightArr[pop2];
+
         leftArr[parent] = pop1; //leftArr stores left children
         rightArr[parent] = pop2; //rightArr stores right children
-        weightArr[parent] = pop1 + pop2;
-        heap.push(parent, weightArr);
 
+        heap.push(parent, weightArr);
+        nextFree++;
     }
     //
     // 4. Return the index of the last remaining node (root)

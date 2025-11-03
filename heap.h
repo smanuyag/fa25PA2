@@ -62,8 +62,34 @@ struct MinHeap {
 
     void downheap(int pos, int weightArr[]) {
         // TODO: swap parent downward while larger than any child
-
+        //need to check that both children exist somehow
+        //^maybe like !data[leftChild]? or !weightArr[data[rightChild]] (?)
+        int parent = 0;
+        while (parent != size) { //not sure if this is the right condition, maybe < size works better
+            int leftChild = (2 * parent) + 1;
+            int rightChild = (2 * parent) + 2;
+            //if less than both children already, it's a minheap
+            if (weightArr[data[parent]] <= weightArr[data[rightChild]] && weightArr[data[parent]] < weightArr[data[leftChild]]) {
+            }
+            int temp = data[parent];
+            if (data[leftChild] < data[parent]) {
+                data[parent] = data[leftChild];
+                data[leftChild] = temp;
+                parent = leftChild;
+                //leftChild = (2 * parent) + 1;
+                //rightChild = (2 * parent) + 2;
+                //^the beginning of the loop should do this already
+            }
+            else if (data[rightChild] < data[parent]) {
+                data[parent] = data[rightChild];
+                data[rightChild] = temp;
+                parent = rightChild;
+                //again the left and right child updates should happen on the next loop iteration
+            }
+        }
     }
+
+
 };
 
 #endif

@@ -110,18 +110,19 @@ int buildEncodingTree(int nextFree) {
     //  - Set left/right pointers
     //  - Push new parent index back into the heap
     while (heap.size > 1) {
+        //two smallest nodes popped
         int pop1 = heap.pop(weightArr);
         int pop2 = heap.pop(weightArr);
 
-        int parent = nextFree;
+        int parent = nextFree; //create spot for parent node
 
-        weightArr[parent] = weightArr[pop1] + weightArr[pop2];
+        weightArr[parent] = weightArr[pop1] + weightArr[pop2]; //combined weight of the two nodes
 
         leftArr[parent] = pop1; //leftArr stores left children
         rightArr[parent] = pop2; //rightArr stores right children
 
-        heap.push(parent, weightArr);
-        nextFree++;
+        heap.push(parent, weightArr); //pushed back into the heap
+        nextFree++; //get next open index
     }
     //
     // 4. Return the index of the last remaining node (root)

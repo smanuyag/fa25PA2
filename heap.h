@@ -32,7 +32,7 @@ struct MinHeap {
             return -1;
         }
         int smallest = data[0];
-        int replace = data[size-1]; //replace also index of data[0] so it can replace it later
+        int replace = data[size-1]; //size-1 is last element
 
         // Replace root with last element, then call downheap()
         //^ need to dec size
@@ -46,7 +46,7 @@ struct MinHeap {
     void upheap(int pos, int weightArr[]) {
         // TODO: swap child upward while smaller than parent
         int child = pos;
-        while (child > 0) {
+        while (child > 0) { //no child means no parent, so the loop condition should rely on the child
             int parent = (child - 1) / 2;
             //maybe add condition check for if it's still a min heap after push
             if (weightArr[data[parent]] <= weightArr[data[child]]) {
@@ -54,11 +54,11 @@ struct MinHeap {
             }
 
         //make parent dependent on child instead
-            int temp = data[parent];
-            data[parent] = data[child];
-            data[child] = temp;
-            child = parent;
-            parent = (child - 1) / 2;
+            int temp = data[parent]; //save parent spot since it will be replaced in the line below
+            data[parent] = data[child]; //swap child with parent
+            data[child] = temp; //child gets parent value
+            child = parent; //update child
+            parent = (child - 1) / 2; //update parent
         }
     }
 
@@ -72,19 +72,20 @@ struct MinHeap {
 
         int parent = pos;
 
-        while (((2 * parent) + 1) <  size) { //not sure if this is the right condition, maybe < size works better
+        while (((2 * parent) + 1) <  size) { //ensures that the left child exists
             int leftChild = (2 * parent) + 1;
             int rightChild = (2 * parent) + 2;
             //if less than both children already, it's a minheap
-            int smallest = leftChild;
-            if ((rightChild < size) && (weightArr[data[rightChild]] < weightArr[data[leftChild]])) {
-                smallest = rightChild;
+            int smallest = leftChild; //set smaller child to leftChild first
+            if ((rightChild < size) && (weightArr[data[rightChild]] < weightArr[data[leftChild]])) { //check that the rightChild index is within range and if the weight is less than the left child
+                smallest = rightChild; //right child is smaller
             }
-            if (weightArr[data[parent]] <= weightArr[data[smallest]]) {
+            if (weightArr[data[parent]] <= weightArr[data[smallest]]) { //condition for already in minheap order
                 return;
             }
             int temp = data[parent];
             //no need to compare parent with left and right child since the smallest between them was already found
+                //swaps and update parent node
                 data[parent] = data[smallest];
                 data[smallest] = temp;
                 parent = smallest;

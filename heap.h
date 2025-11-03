@@ -22,7 +22,7 @@ struct MinHeap {
         int pushed = size;
         size++;
         //upheap - need something in push() to pass to upheap, what is it?
-        //upheap(size) - maybe
+        upheap(size, weightArr);
     }
     //uses an int var that contains the smallest index for returning, and another with the same
     //value to get replaced by the last element, then downheaps to maintain minheap structure
@@ -32,12 +32,12 @@ struct MinHeap {
             cout << "Heap is empty." << endl;
             return -1;
         }
-        int smallest = weightArr[0];
-        int replace = weightArr[0];
+        int smallest = weightArr[data[0]];
+        int replace = smallest;
 
         // Replace root with last element, then call downheap()
-        replace = weightArr[size - 1];
-        //downheap(); - need something to pass to this
+        replace = weightArr[data[size]];
+        downheap(replace, weightArr);
         return smallest;
     }
 

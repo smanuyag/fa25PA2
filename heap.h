@@ -21,8 +21,7 @@ struct MinHeap {
         data[size] = weightArr[idx];
         int pushed = size;
         size++;
-        //upheap - need something in push() to pass to upheap, what is it?
-        upheap(size, weightArr);
+        upheap(pushed, weightArr);
     }
     //uses an int var that contains the smallest index for returning, and another with the same
     //value to get replaced by the last element, then downheaps to maintain minheap structure
@@ -32,14 +31,14 @@ struct MinHeap {
             cout << "Heap is empty." << endl;
             return -1;
         }
-        //actually, you don't need weight, you need the indexes...., fix later
-        int smallest = weightArr[data[0]]; // --> data[0]
+        int smallest = data[0];
         int replace = smallest; //replace also index of data[0] so it can replace it later
 
         // Replace root with last element, then call downheap()
         //^ need to dec size
-        replace = weightArr[data[size]]; //data[size - 1] instead(?)
+        replace = data[size-1];
         //dec size here
+        size--;
         downheap(replace, weightArr);
         return smallest;
     }
@@ -66,34 +65,32 @@ struct MinHeap {
     void downheap(int pos, int weightArr[]) {
         // TODO: swap parent downward while larger than any child
         //need to check that both children exist somehow
-        //^maybe like !data[leftChild]? or !weightArr[data[rightChild]] (?)
         //might have to change the loop condition because it will keep going even if there's no children
         //^probably dependent on left child since it has to come before a right child
         //^if there is a left child, compare it to the right child, and make sure both are
         //within the size range(?), whichever is smaller (if both exist) will get swapped with the parent
 
-        int parent = 0;
-        while (parent != size) { //not sure if this is the right condition, maybe < size works better
+        int parent = pos;
+
+        while (((2 * parent) + 1) <  size) { //not sure if this is the right condition, maybe < size works better
             int leftChild = (2 * parent) + 1;
             int rightChild = (2 * parent) + 2;
             //if less than both children already, it's a minheap
-            if (weightArr[data[parent]] <= weightArr[data[rightChild]] && weightArr[data[parent]] < weightArr[data[leftChild]]) {
+            int smallest = leftChild;
+            if ((rightChild < size) && (weightArr[data[rightChild]] < weightArr[data[leftChild]])) {
+                smallest = rightChild;
+            }
+            if (weightArr[data[parent]] <= weightArr[data[smallest]]) {
+                return;
             }
             int temp = data[parent];
-            if (data[leftChild] < data[parent]) {
-                data[parent] = data[leftChild];
-                data[leftChild] = temp;
-                parent = leftChild;
+            //no need to compare parent with left and right child since the smallest between them was already found
+                data[parent] = data[smallest];
+                data[smallest] = temp;
+                parent = smallest;
                 //leftChild = (2 * parent) + 1;
                 //rightChild = (2 * parent) + 2;
                 //^the beginning of the loop should do this already
-            }
-            else if (data[rightChild] < data[parent]) {
-                data[parent] = data[rightChild];
-                data[rightChild] = temp;
-                parent = rightChild;
-                //again the left and right child updates should happen on the next loop iteration
-            }
         }
     }
 

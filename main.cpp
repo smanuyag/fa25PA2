@@ -91,7 +91,17 @@ int createLeafNodes(int freq[]) {
 int buildEncodingTree(int nextFree) {
     // TODO:
     // 1. Create a MinHeap object.
+    //^have to use an array
+    int size = 0; //initialize starting index/size for array since weightArr[] is already given (I'm assuming there's no need to actually create one).
+    //^used in the heap functions
+
     // 2. Push all leaf node indices into the heap.
+    //loop until nextFree
+    for (int i = 0; i < nextFree; i++) {
+        if (weightArr[i] > 0) {
+            push(i, weightArr);
+        }
+    }
     // 3. While the heap size is greater than 1:
     //    - Pop two smallest nodes
     //    - Create a new parent node with combined weight

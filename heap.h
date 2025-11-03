@@ -32,7 +32,7 @@ struct MinHeap {
             return -1;
         }
         int smallest = data[0];
-        int replace = smallest; //replace also index of data[0] so it can replace it later
+        int replace = data[size-1]; //replace also index of data[0] so it can replace it later
 
         // Replace root with last element, then call downheap()
         //^ need to dec size

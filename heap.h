@@ -64,6 +64,11 @@ struct MinHeap {
         // TODO: swap parent downward while larger than any child
         //need to check that both children exist somehow
         //^maybe like !data[leftChild]? or !weightArr[data[rightChild]] (?)
+        //might have to change the loop condition because it will keep going even if there's no children
+        //^probably dependent on left child since it has to come before a right child
+        //^if there is a left child, compare it to the right child, and make sure both are
+        //within the size range(?), whichever is smaller (if both exist) will get swapped with the parent
+
         int parent = 0;
         while (parent != size) { //not sure if this is the right condition, maybe < size works better
             int leftChild = (2 * parent) + 1;

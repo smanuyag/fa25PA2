@@ -134,13 +134,29 @@ int buildEncodingTree(int nextFree) {
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
+    int node = root; //node will start at root, and will change as pops happen
     std::stack<pair<int, string>> codeStack;
     // Left edge adds '0', right edge adds '1'.
-    //codeStack.push(make_pair(root, '0'); <-- might not be the right string
+    //codeStack.push(make_pair(root, '0'); <-- might not be the right string, can't be char, needs to be string
     //codeStack.push(root, '1');
-    //have to maybe traverse the left and right arrays(?)
-    //where to use codes[]? in stack push?
+    codeStack.push(make_pair(root, "")); //initialize stack
 
+    if (leftArr[node] != -1) { //left child of the node exists
+        codeStack.push(make_pair(root, "0")); //left edge
+    }
+    if (leftArr[node] != -1) { //right child of the node exists
+        codeStack.push(make_pair(root, "1")); //right edge
+    }
+
+    //if there's nothing in the left and right arrays, there's no children nodes --> leaf node
+    if (leftArr[root] == -1 && rightArr[root] == -1) {
+        while (codeStack.size() > 0) { //while not empty, pop out the code
+            codeStack.pop(); //feel like there should be something in the pop
+        }
+    }
+    //have to maybe traverse the left and right arrays(?)
+    //where to use codes[]? in stack push? --> maybe use at the very end since
+    //that stores the created code
 
     // Record code when a leaf node is reached.
     //check if it's reached nextFree, or similar to that, or check if both left

@@ -32,11 +32,14 @@ struct MinHeap {
             cout << "Heap is empty." << endl;
             return -1;
         }
-        int smallest = weightArr[data[0]];
-        int replace = smallest;
+        //actually, you don't need weight, you need the indexes...., fix later
+        int smallest = weightArr[data[0]]; // --> data[0]
+        int replace = smallest; //replace also index of data[0] so it can replace it later
 
         // Replace root with last element, then call downheap()
-        replace = weightArr[data[size]];
+        //^ need to dec size
+        replace = weightArr[data[size]]; //data[size - 1] instead(?)
+        //dec size here
         downheap(replace, weightArr);
         return smallest;
     }

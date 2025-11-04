@@ -93,6 +93,7 @@ int buildEncodingTree(int nextFree) {
     // 1. Create a MinHeap object.
     //^have to use an array
     MinHeap heap = MinHeap();
+    nextFree = 26;
 
     //initialize starting index/size for array since weightArr[] is already given (I'm assuming there's no need to actually create one).
     //^used in the heap functions
@@ -115,26 +116,25 @@ int buildEncodingTree(int nextFree) {
         int pop2 = heap.pop(weightArr);
 
         int parent = nextFree; //create spot for parent node
-
-        weightArr[parent] = weightArr[pop1] + weightArr[pop2]; //combined weight of the two nodes
-
         leftArr[parent] = pop1; //leftArr stores left children
         rightArr[parent] = pop2; //rightArr stores right children
+
+        weightArr[parent] = weightArr[pop1] + weightArr[pop2]; //combined weight of the two nodes
 
         heap.push(parent, weightArr); //pushed back into the heap
         nextFree++; //get next open index
     }
-    //
     // 4. Return the index of the last remaining node (root)
-    return heap.pop(weightArr); //pop returns the smallest index, which should be root by now
-    return -1; // placeholder
+    return heap.pop(weightArr); //pop returns the last node which should be the root by now
 }
 
 // Step 4: Use an STL stack to generate codes
 void generateCodes(int root, string codes[]) {
     // TODO:
     // Use stack<pair<int, string>> to simulate DFS traversal.
-    int nodeIndex = root; //node will start at root, and will change as pops happen
+    if (root == -1) { //no root to start at
+        return;
+    }
     std::stack<pair<int, string>> codeStack;
 
     codeStack.push(make_pair(root, "")); //initialize stack
@@ -144,23 +144,33 @@ void generateCodes(int root, string codes[]) {
 
     //if there's nothing in the left and right arrays, there's no children nodes --> leaf node
     while (codeStack.size() > 0) {
-        if (leftArr[root] == -1 && rightArr[root] == -1) {
-            pair<int, string> curr = codeStack.top();
-            codeStack.pop();
-            int nodeIndex = curr.first;
-            string path = curr.second;
+        pair<int, string> curr = codeStack.top();
+        codeStack.pop();
+        int nodeIndex = curr.first;
+        string path = curr.second;
+
+        int left = leftArr[nodeIndex];
+        int right = rightArr[nodeIndex];
+
+        // Record code when a leaf node is reached.
+        if (left == -1 && right == -1) { //checks it's a leaf node (no children nodes)
+            if (path == "") { //leaf node is the only node
+                codes[nodeIndex] = "0";
+            }
+            else {
+                codes[nodeIndex] = path; //path to this leaf node is passed to codes[]
+            }
         }
 
-        if (leftArr[nodeIndex] != -1) { //left child of the node exists
-            codeStack.push(make_pair(root, "0")); //left edge
+        //have to do path + "0" or "1" so that it adds to the existing code as it traverses
+        if (right != -1) { //right child of the node exists
+            codeStack.push(make_pair(right, path + "1")); //right edge
         }
-        if (rightArr[nodeIndex] != -1) { //right child of the node exists
-            codeStack.push(make_pair(root, "1")); //right edge
+        if (left != -1) { //left child of the node exists
+            codeStack.push(make_pair(left, path + "0")); //left edge
         }
     }
 
-    // Record code when a leaf node is reached.
-    //^ still need to figure out how to get it into codes[]
 }
 
 // Step 5: Print table and encoded message

@@ -93,7 +93,6 @@ int buildEncodingTree(int nextFree) {
     // 1. Create a MinHeap object.
     //^have to use an array
     MinHeap heap = MinHeap();
-    nextFree = 26;
 
     //initialize starting index/size for array since weightArr[] is already given (I'm assuming there's no need to actually create one).
     //^used in the heap functions
@@ -154,11 +153,12 @@ void generateCodes(int root, string codes[]) {
 
         // Record code when a leaf node is reached.
         if (left == -1 && right == -1) { //checks it's a leaf node (no children nodes)
+            int letterIdx = charArr[nodeIndex] - 'a'; //get the character at the leaf node
             if (path == "") { //leaf node is the only node
-                codes[nodeIndex] = "0";
+                codes[letterIdx] = "0"; //needs to use the letter index and not the node index to assign the code to that specific letter
             }
             else {
-                codes[nodeIndex] = path; //path to this leaf node is passed to codes[]
+                codes[letterIdx] = path; //path to this leaf node is passed to codes[]
             }
         }
 

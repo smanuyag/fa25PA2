@@ -92,8 +92,8 @@ int buildEncodingTree(int nextFree) {
     // TODO:
     // 1. Create a MinHeap object.
     //^have to use an array
-    MinHeap heap;
-    heap.size = 0;
+    MinHeap heap = MinHeap();
+
     //initialize starting index/size for array since weightArr[] is already given (I'm assuming there's no need to actually create one).
     //^used in the heap functions
 
@@ -136,32 +136,31 @@ void generateCodes(int root, string codes[]) {
     // Use stack<pair<int, string>> to simulate DFS traversal.
     int nodeIndex = root; //node will start at root, and will change as pops happen
     std::stack<pair<int, string>> codeStack;
-    // Left edge adds '0', right edge adds '1'.
-    //codeStack.push(make_pair(root, '0'); <-- might not be the right string, can't be char, needs to be string
-    //codeStack.push(root, '1');
+
     codeStack.push(make_pair(root, "")); //initialize stack
 
-    if (leftArr[nodeIndex] != -1) { //left child of the node exists
-        codeStack.push(make_pair(root, "0")); //left edge
-    }
-    if (leftArr[nodeIndex] != -1) { //right child of the node exists
-        codeStack.push(make_pair(root, "1")); //right edge
-    }
+    // Left edge adds '0', right edge adds '1'.
+
 
     //if there's nothing in the left and right arrays, there's no children nodes --> leaf node
     while (codeStack.size() > 0) {
-    if (leftArr[root] == -1 && rightArr[root] == -1) {
-        codeStack.pop(); // pops the leaf node
+        if (leftArr[root] == -1 && rightArr[root] == -1) {
+            pair<int, string> curr = codeStack.top();
+            codeStack.pop();
+            int nodeIndex = curr.first;
+            string path = curr.second;
+        }
+
+        if (leftArr[nodeIndex] != -1) { //left child of the node exists
+            codeStack.push(make_pair(root, "0")); //left edge
+        }
+        if (rightArr[nodeIndex] != -1) { //right child of the node exists
+            codeStack.push(make_pair(root, "1")); //right edge
+        }
     }
 
-}
-    //have to maybe traverse the left and right arrays(?)
-    //where to use codes[]? in stack push? --> maybe use at the very end since
-    //that stores the created code
-
     // Record code when a leaf node is reached.
-    //check if it's reached nextFree, or similar to that, or check if both left
-    //and right array are empty(?)
+    //^ still need to figure out how to get it into codes[]
 }
 
 // Step 5: Print table and encoded message

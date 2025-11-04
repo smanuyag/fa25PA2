@@ -87,6 +87,13 @@ int createLeafNodes(int freq[]) {
     return nextFree;
 }
 
+//The buildEncodingTree function starts with a minheap and pushes the index of weights that are > 0 into the
+//heap. While the heap hasn't reached one node/the root node yet, a parent is created at index nextFree,
+//and leftArr and rightArr which get the left and right child indexes. Using all three of these,
+//the two smallest nodes' weights are popped and are combined and assigned to the parent's weight.
+//Then, that parent index with that weight is pushed back into  the heap. The root node is then popped once
+//it's the only thing left in order to return its index.
+
 // Step 3: Build the encoding tree using heap operations
 int buildEncodingTree(int nextFree) {
     // TODO:
@@ -100,7 +107,7 @@ int buildEncodingTree(int nextFree) {
     // 2. Push all leaf node indices into the heap.
     //loop until nextFree
     for (int i = 0; i < nextFree; i++) {
-        if (weightArr[i] > 0) {
+        if (weightArr[i] > 0) { //only pushes if the weight at the index i is > 0
             heap.push(i, weightArr);
         }
     }
@@ -126,6 +133,11 @@ int buildEncodingTree(int nextFree) {
     // 4. Return the index of the last remaining node (root)
     return heap.pop(weightArr); //pop returns the last node which should be the root by now
 }
+//The generateCodes function creates a stack that pops each pair (nodeIdex, path) one by one off the stack
+//and gets the left and right child of the current node, and then checks if they exist or not (if not, it's a leaf node),
+//and finds the correct letter index/slot in codes[] using ASCII values (charArr[nodeIndex] - 'a'). If the right or left child
+//exist, those left and right children's path strings are updated with "0" (for left) or "1" (for right) that hold the code, and that
+//new pair is pushed into the stack.
 
 // Step 4: Use an STL stack to generate codes
 void generateCodes(int root, string codes[]) {
@@ -135,12 +147,9 @@ void generateCodes(int root, string codes[]) {
         return;
     }
     std::stack<pair<int, string>> codeStack;
-
     codeStack.push(make_pair(root, "")); //initialize stack
 
     // Left edge adds '0', right edge adds '1'.
-
-
     //if there's nothing in the left and right arrays, there's no children nodes --> leaf node
     while (codeStack.size() > 0) {
         pair<int, string> curr = codeStack.top();
@@ -153,7 +162,7 @@ void generateCodes(int root, string codes[]) {
 
         // Record code when a leaf node is reached.
         if (left == -1 && right == -1) { //checks it's a leaf node (no children nodes)
-            int letterIdx = charArr[nodeIndex] - 'a'; //get the character at the leaf node
+            int letterIdx = charArr[nodeIndex] - 'a'; //get the character at the leaf node by subtracting ASCII codes to stay within the 0-25 range for the 26 letters
             if (path == "") { //leaf node is the only node
                 codes[letterIdx] = "0"; //needs to use the letter index and not the node index to assign the code to that specific letter
             }

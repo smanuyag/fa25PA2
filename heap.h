@@ -14,8 +14,8 @@ struct MinHeap {
 
     MinHeap() { size = 0; }
 
-    //insert new index at the end of the heap, and increase the size by 1 to get the next
-    //available index, then upheap
+    //Push inserts new index (idx) at the end of the heap, and increase the size by 1 to get the next
+    //available index, then upheaps.
     void push(int idx, int weightArr[]) {
         // TODO: insert index at end of heap, restore order using upheap()
         //can't push into a full heap
@@ -24,13 +24,13 @@ struct MinHeap {
             return;
         }
         data[size] = idx;
-        int pushed = size;
+        int pushed = size; //preserve size before it's incremented
         size++;
         upheap(pushed, weightArr);
     }
-    //uses an int var that contains the smallest index for returning, set beginning of heap to
-    //last element, update size, then down heap starting with root since that element was just replaced and needs
-    //to be checked to see if it has to be fixed (downheaped)
+    //Pop uses an int variable that contains the smallest index for returning, sets the beginning of heap to
+    //last element, updates size, then downheaps starting with root since that element was just replaced and needs
+    //to be checked to see if it has to be downheaped.
     int pop(int weightArr[]) {
         // TODO: remove and return smallest index
         if (size == 0) {
@@ -47,9 +47,9 @@ struct MinHeap {
         return smallest;
     }
 
-    //check to make sure the child node exists, find its parent, compare their weights,
+    //Upheap first checks to make sure the child node exists, find its parent, compare their weights,
     //break if it's still in minheap order, and swap otherwise, and update child
-    //and parent nodes to keep going/see if more upheaps are needed
+    //and parent nodes to keep going/see if more upheaps are needed.
     void upheap(int pos, int weightArr[]) {
         // TODO: swap child upward while smaller than parent
         int child = pos;
@@ -69,17 +69,16 @@ struct MinHeap {
         }
     }
 
-    //check that the parent is in range, check that the left child exists, so the parent has at least one child node,
-    //then the indexes for the left and right child are created, the left and right child weigts are compared to see
-    //which one will be compared to the parent node's weight and swapped if needed, then the parent, and
-    //left and right child indexes are updated
+    //Downheap first checks that the parent is in range, check that the left child exists, so the parent has at least one child node,
+    //then the indexes for the left and right child are created, the left and right child weights are compared to see
+    //which one (the smaller weight) will be compared to the parent node's weight and swapped if needed, then the parent, and
+    //left and right child indexes are updated.
     void downheap(int pos, int weightArr[]) {
         // TODO: swap parent downward while larger than any child
-        //need to check that both children exist somehow
         //might have to change the loop condition because it will keep going even if there's no children
         //^probably dependent on left child since it has to come before a right child
         //^if there is a left child, compare it to the right child, and make sure both are
-        //within the size range(?), whichever is smaller (if both exist) will get swapped with the parent
+        //whichever is smaller (if both exist) will get swapped with the parent
 
         if (pos < 0 || pos >= size) { //check if parent is within range/out of range
             return;
